@@ -495,10 +495,10 @@ section .container {
 .interests .icon-box h3 {
   font-weight: 700;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   line-height: 1;
-  font-size: 16px;
-  color: #fff;
+  font-size: 24px;
+  color: #ff9f4a;
 }
 
 .interests .icon-box:hover {
