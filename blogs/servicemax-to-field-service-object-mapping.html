@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate | Sahil Bhalla</title>
+  <meta content="A migration only goes as well as its mapping. How to map ServiceMax objects, products and processes to the Field Service data model before moving a single record." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 3 min read</span>
+      <h1>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">ServiceMax</span><span class="skill-chip">Field Service</span><span class="skill-chip">Data Migration</span></div>
+      <div class="article-body">
+<p>When a business merger brought a ServiceMax org and a Salesforce Field Service org under one roof, the first question everyone asked was "how fast can we move the data?" The better question was "what does each record <em>become</em> on the other side?" Working as Technical Architect on that conversion taught me that a migration only goes as well as its mapping.</p>
+
+<h3>Map processes, not just objects</h3>
+<p>ServiceMax and Field Service solve the same problems, but they model them differently. Before writing a single mapping row, list the business processes the technicians and dispatchers actually use and decide how each one will run in Field Service:</p>
+<ul>
+  <li><strong>Dispatch</strong> on the ServiceMax board becomes scheduling in the <strong>Dispatcher Console</strong>, driven by scheduling policies.</li>
+  <li><strong>SFM wizards and transactions</strong> usually become <strong>screen flows</strong> and quick actions, surfaced in the Field Service mobile app.</li>
+  <li><strong>Work details</strong> split into labour and activity lines (Work Order Line Items) and parts usage (Products Consumed).</li>
+  <li><strong>Technician stock</strong> moves to Field Service inventory: Locations and Product Items.</li>
+</ul>
+
+<h3>A typical object mapping</h3>
+<p>The table below is the starting point I use. ServiceMax API names vary with version and customization, so always confirm them against your org's schema.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>ServiceMax</th><th>Salesforce Field Service</th></tr></thead>
+  <tbody>
+    <tr><td>Work Order (<code>SVMXC__Service_Order__c</code>)</td><td><code>WorkOrder</code></td></tr>
+    <tr><td>Work Detail (<code>SVMXC__Service_Order_Line__c</code>)</td><td><code>WorkOrderLineItem</code> for labour and activities, <code>ProductConsumed</code> for parts</td></tr>
+    <tr><td>Installed Product (<code>SVMXC__Installed_Product__c</code>)</td><td><code>Asset</code></td></tr>
+    <tr><td>Location (<code>SVMXC__Site__c</code>)</td><td><code>Location</code> with an <code>Address</code></td></tr>
+    <tr><td>Service Team (<code>SVMXC__Service_Group__c</code>)</td><td>Usually <code>ServiceTerritory</code> (sometimes <code>ServiceCrew</code>)</td></tr>
+    <tr><td>Technician (<code>SVMXC__Service_Group_Members__c</code>)</td><td><code>ServiceResource</code> plus <code>ServiceTerritoryMember</code></td></tr>
+    <tr><td>Product Stock (<code>SVMXC__Product_Stock__c</code>)</td><td><code>ProductItem</code> at an inventory <code>Location</code></td></tr>
+    <tr><td>Service Contract (<code>SVMXC__Service_Contract__c</code>)</td><td><code>ServiceContract</code> and <code>Entitlement</code></td></tr>
+    <tr><td>Skill (<code>SVMXC__Skill__c</code>)</td><td><code>Skill</code>, with <code>ServiceResourceSkill</code> and <code>SkillRequirement</code></td></tr>
+  </tbody>
+</table></div>
+
+<h3>Product mapping comes first</h3>
+<p>Almost everything downstream points at a product: assets, required parts, stock, consumed parts and price book entries. Settle these before anything else:</p>
+<ul>
+  <li><strong>One product master.</strong> After a merger, the same part often exists twice under different codes. Agree on the surviving product code and keep a cross-reference of the retired ones.</li>
+  <li><strong>Units of measure.</strong> Field Service tracks stock in <code>QuantityUnitOfMeasure</code>. A part counted in boxes on one side and in pieces on the other will quietly corrupt inventory.</li>
+  <li><strong>Serialized versus non-serialized parts.</strong> Decide which become Assets and which are only tracked as stock.</li>
+</ul>
+
+<h3>Conversion updates before the load</h3>
+<p>Once the mapping is agreed, apply the conversion updates to the extracted data rather than fixing records after they land: translate picklist values, swap retired product codes for surviving ones, normalize addresses, and convert statuses to the Field Service status model. Running the migration on clean, already-converted data makes reconciliation far simpler.</p>
+
+<div class="callout"><strong>Tip:</strong> Add a <code>Legacy_Id__c</code> external ID field to every target object. It lets you upsert safely, rerun loads, and trace any Field Service record back to its ServiceMax source during testing.</div>
+
+<p>In the next article I cover the order the data has to be loaded in, which is where most Field Service migrations stumble.</p>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-inventory-for-technicians.html">
+              <div class="blog-cover"><img src="img/covers/field-service-inventory-for-technicians.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Managing Technician Van Stock with Field Service Inventory</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

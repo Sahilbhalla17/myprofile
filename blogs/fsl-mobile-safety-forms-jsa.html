@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App | Sahil Bhalla</title>
+  <meta content="How to give technicians safety and job forms they can complete on site, offline, before work starts, using flows in the Field Service mobile app." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 2 min read</span>
+      <h1>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Field Service Mobile</span><span class="skill-chip">Flows</span><span class="skill-chip">Safety</span></div>
+      <div class="article-body">
+<p>On an oilfield project I worked on as Technical Architect and Tech Lead, technicians had to complete several forms on every job: a Job Safety Analysis (JSA) before starting, job-specific forms such as the FSO, and a Customer Authorization. Paper forms were getting lost, and nobody could prove the JSA was done before work began. Moving these forms into the Field Service mobile app solved both problems.</p>
+
+<h3>Model the form as data</h3>
+<p>Store each completed form as a record related to the Work Order (or Service Appointment), not as a PDF. A simple pattern:</p>
+<ul>
+  <li>A <strong>form header</strong> object (for example <code>Job_Safety_Analysis__c</code>) with a lookup to the Work Order, the technician, and the completion time.</li>
+  <li>A <strong>child object for repeating rows</strong>, such as each hazard and its control measure.</li>
+</ul>
+<p>Because the answers are fields, you can report on them: which hazards come up most often, which sites need extra controls, and which jobs started without a completed JSA.</p>
+
+<h3>Deliver the form as a flow</h3>
+<p>Build each form as a <strong>screen flow</strong> and add it to the Field Service mobile app as an app extension or quick action on the Work Order and Service Appointment. Technicians launch it from the job they are already looking at, so the flow receives the record ID and the form is linked automatically.</p>
+<ul>
+  <li><strong>Keep screens short.</strong> One topic per screen works much better on a phone than a long scrolling form.</li>
+  <li><strong>Prefer simple components.</strong> Some Lightning components, such as lookups, are not supported in Field Service mobile flows. My earlier post shows how to use a Record Choice Set with radio buttons instead.</li>
+  <li><strong>Design for no signal.</strong> Oilfield sites often have no connectivity. Test every form offline, and avoid steps that need a live server round trip.</li>
+</ul>
+
+<h3>Make the JSA a gate, not a suggestion</h3>
+<p>The real value comes from enforcing order. Add a check so a Service Appointment cannot move to <em>In Progress</em> until its JSA record exists. This can be a validation rule on the status change, or a flow that runs when the status changes. The technician then sees a clear message in the app telling them to complete the JSA first.</p>
+
+<div class="callout"><strong>Tip:</strong> Pre-fill everything you already know (site, asset, job type and technician) so the technician only answers the questions that matter. Shorter forms get completed properly.</div>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-inventory-for-technicians.html">
+              <div class="blog-cover"><img src="img/covers/field-service-inventory-for-technicians.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Managing Technician Van Stock with Field Service Inventory</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>The Salesforce Field Service Data Model, Explained Simply | Sahil Bhalla</title>
+  <meta content="Work Orders, Line Items, Service Appointments, Resources and Territories: what each object is for and how they connect." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/field-service-data-model-explained.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 2 min read</span>
+      <h1>The Salesforce Field Service Data Model, Explained Simply</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Data Model</span><span class="skill-chip">Field Service</span><span class="skill-chip">Architecture</span></div>
+      <div class="article-body">
+<p>Most confusion in Field Service projects comes from mixing up a few core objects. Once the data model clicks, design decisions, reports and migrations all become easier. Here is how I explain it to teams new to Field Service.</p>
+
+<h3>The work</h3>
+<ul>
+  <li><strong>Work Order</strong>: the job to be done, such as "repair pump at site 12". It holds the account, asset, location and overall status.</li>
+  <li><strong>Work Order Line Item</strong>: individual tasks within a work order, each with its own status and work type.</li>
+  <li><strong>Work Type</strong>: a template for a kind of job. It sets estimated duration, required skills and parts, and whether a Service Appointment is created automatically.</li>
+</ul>
+
+<h3>The scheduling</h3>
+<ul>
+  <li><strong>Service Appointment</strong>: a visit scheduled at a time. Its <code>ParentRecordId</code> usually points to a Work Order or Line Item. One work order can need several visits.</li>
+  <li><strong>Assigned Resource</strong>: the junction that says which Service Resource is doing which appointment.</li>
+</ul>
+
+<h3>The people and places</h3>
+<ul>
+  <li><strong>Service Resource</strong>: a technician (linked to a user), a crew, or a piece of equipment that can be scheduled.</li>
+  <li><strong>Service Territory</strong>: a region or team, with its Operating Hours.</li>
+  <li><strong>Service Territory Member</strong>: connects a resource to a territory as primary, secondary or relocation, with effective dates.</li>
+  <li><strong>Skills, Service Resource Skills and Skill Requirements</strong>: what a technician can do and what a job needs.</li>
+  <li><strong>Resource Absence</strong>: time a resource is unavailable.</li>
+</ul>
+
+<h3>The things</h3>
+<ul>
+  <li><strong>Asset</strong>: installed equipment at a customer site, with its service history.</li>
+  <li><strong>Location, Product Item, Product Required and Product Consumed</strong>: the inventory model.</li>
+</ul>
+
+<h3>How it fits together</h3>
+<p>A <em>Work Type</em> shapes a <em>Work Order</em>. The Work Order gets one or more <em>Service Appointments</em>. Scheduling uses <em>Territories</em>, <em>Operating Hours</em>, <em>Skills</em> and <em>Absences</em> to pick a <em>Service Resource</em>, recorded as an <em>Assigned Resource</em>. On site, the technician records <em>Products Consumed</em> and completes the appointment.</p>
+
+<div class="callout"><strong>Design rule I follow:</strong> keep business data about the job on the Work Order, and keep time-and-place data on the Service Appointment. Mixing the two causes duplicate fields and confusing reports.</div>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Field Service Scheduling Policies Explained: Work Rules vs. Service Objectives | Sahil Bhalla</title>
+  <meta content="Work rules decide who can do a job; service objectives decide who should. How to combine them into scheduling policies that match how your business works." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/scheduling-policies-work-rules-objectives.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 2 min read</span>
+      <h1>Field Service Scheduling Policies Explained: Work Rules vs. Service Objectives</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Scheduling</span><span class="skill-chip">Optimization</span><span class="skill-chip">Field Service</span></div>
+      <div class="article-body">
+<p>Every automatic scheduling decision in Field Service, whether from the Schedule button, Get Candidates or optimization, is driven by a <strong>scheduling policy</strong>. Understanding the two halves of a policy is the fastest way to make scheduling behave the way your business expects.</p>
+
+<h3>Work rules: who <em>can</em> do the job</h3>
+<p>Work rules are hard filters. A resource that breaks a work rule is never offered. Common rules:</p>
+<ul>
+  <li><strong>Match Territory</strong>: the resource is a member of the appointment's service territory.</li>
+  <li><strong>Service Resource Availability</strong>: within working hours, without overlapping absences or other jobs.</li>
+  <li><strong>Match Skills</strong>: the resource has the skills (and skill levels) the job requires.</li>
+  <li><strong>Maximum Travel from Home</strong>: limits how far a resource travels from their home base.</li>
+  <li><strong>Excluded and Required Resources</strong>: honour customer preferences such as "never send this technician" or "only this one".</li>
+  <li><strong>Earliest Start Permitted and Due Date</strong>: keep the appointment inside its allowed window.</li>
+</ul>
+
+<h3>Service objectives: who <em>should</em> do the job</h3>
+<p>Among the resources that pass every rule, objectives score the options. Each objective has a weight:</p>
+<ul>
+  <li><strong>ASAP</strong>: earlier slots score higher.</li>
+  <li><strong>Minimize Travel</strong>: shorter drives score higher.</li>
+  <li><strong>Minimize Overtime</strong>: avoids pushing technicians past normal hours.</li>
+  <li><strong>Preferred Resource</strong>: favours the customer's preferred technician.</li>
+  <li><strong>Resource Priority and Skill Level</strong>: favour certain resources or more experienced technicians.</li>
+</ul>
+
+<h3>Start from the standard policies</h3>
+<p>Field Service ships with policies such as <strong>Customer First</strong>, <strong>High Intensity</strong>, <strong>Soft Boundaries</strong> and <strong>Emergency</strong>. Clone the closest one and adjust it rather than starting from scratch, then test with real appointments and compare the candidates it produces against what an experienced dispatcher would choose.</p>
+
+<h3>Practical advice</h3>
+<ul>
+  <li><strong>Keep work rules strict and few.</strong> Every rule removes candidates, and too many leave nothing to schedule.</li>
+  <li><strong>Change one weight at a time</strong> and retest. Objectives interact in ways that are hard to predict.</li>
+  <li><strong>Use different policies for different situations</strong>, for example one for planned maintenance and one for emergencies.</li>
+  <li><strong>Data quality beats tuning.</strong> Wrong home addresses, stale absences or missing skills will undermine any policy.</li>
+</ul>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

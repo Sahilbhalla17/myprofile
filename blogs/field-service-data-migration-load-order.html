@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Field Service Data Migration: The Load Order That Saves You From Rework | Sahil Bhalla</title>
+  <meta content="Field Service objects depend on each other in a strict order. The sequence I follow, plus the inventory trap that catches most migrations." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/field-service-data-migration-load-order.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 3 min read</span>
+      <h1>Field Service Data Migration: The Load Order That Saves You From Rework</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Data Migration</span><span class="skill-chip">Field Service</span><span class="skill-chip">Data Loader</span></div>
+      <div class="article-body">
+<p>Field Service objects are tightly linked. A Service Appointment needs a parent record, a Service Territory needs Operating Hours, and a Service Resource needs an active user. Load them out of order and you get a wall of lookup errors, or worse, records that load but are silently wrong. This is the sequence I follow after product mapping and conversion updates are done.</p>
+
+<h3>The load order</h3>
+<ol>
+  <li><strong>Reference data:</strong> Products, Price Books and Price Book Entries, Skills.</li>
+  <li><strong>Accounts, Contacts and Locations,</strong> including inventory locations such as warehouses and technician vans.</li>
+  <li><strong>Assets</strong> (installed products), linked to accounts, products and locations.</li>
+  <li><strong>Operating Hours and Time Slots.</strong></li>
+  <li><strong>Service Territories</strong>, which reference Operating Hours.</li>
+  <li><strong>Users, then Service Resources.</strong> Technician resources need an active user with the Field Service resource permission set license.</li>
+  <li><strong>Service Territory Members</strong>, with the correct territory type (primary, secondary or relocation) and effective dates.</li>
+  <li><strong>Service Resource Skills, Work Types and Skill Requirements.</strong></li>
+  <li><strong>Service Contracts and Entitlements.</strong></li>
+  <li><strong>Work Orders, then Work Order Line Items.</strong></li>
+  <li><strong>Service Appointments</strong> (parented to the work order or line item), <strong>then Assigned Resources</strong> for appointments that were already scheduled.</li>
+  <li><strong>Product Items</strong> (stock at each inventory location), then <strong>Products Consumed</strong> for historical parts usage.</li>
+</ol>
+
+<h3>The inventory trap</h3>
+<p>Inserting a <code>ProductConsumed</code> record against a Product Item reduces that item's quantity on hand and creates a Product Item Transaction. If you load current stock levels first and then load years of historical consumption, every van ends up with negative inventory.</p>
+<p>Two ways to avoid it:</p>
+<ul>
+  <li>Load historical consumption first, then set the final on-hand quantities from the legacy system's current stock.</li>
+  <li>Or keep closed-job parts history in a separate reporting object, and only load consumption for open work.</li>
+</ul>
+
+<h3>Habits that make loads repeatable</h3>
+<ul>
+  <li><strong>Upsert on a legacy external ID</strong> so any load can be rerun without creating duplicates.</li>
+  <li><strong>Bypass your own automation</strong> (triggers, flows, validation rules) during the load with a custom-permission or custom-setting switch, and remember to turn it back on.</li>
+  <li><strong>Use smaller batch sizes</strong> for appointments and assignments. Field Service automation does real work on these records and can hit limits in large batches.</li>
+  <li><strong>Reconcile every object</strong>: compare record counts, key sums (such as stock quantity per location), and a sample of records against the source.</li>
+</ul>
+
+<div class="callout"><strong>Lesson learned:</strong> Do at least one full rehearsal in a full-copy sandbox and time it. The rehearsal is where you discover the missing user licence or the territory with no Operating Hours, not on cut-over night.</div>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-inventory-for-technicians.html">
+              <div class="blog-cover"><img src="img/covers/field-service-inventory-for-technicians.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Managing Technician Van Stock with Field Service Inventory</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

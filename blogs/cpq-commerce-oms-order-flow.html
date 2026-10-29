@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>From Quote to Delivery: Connecting Salesforce CPQ, B2B Commerce and Order Management | Sahil Bhalla</title>
+  <meta content="How orders can flow from CPQ quotes and a B2B Commerce storefront into Salesforce Order Management, and the design decisions that keep them consistent." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/cpq-commerce-oms-order-flow.svg" alt="">
+      <span class="blog-meta">CPQ, Commerce &amp; OMS &middot; 2 min read</span>
+      <h1>From Quote to Delivery: Connecting Salesforce CPQ, B2B Commerce and Order Management</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Salesforce CPQ</span><span class="skill-chip">B2B Commerce</span><span class="skill-chip">Order Management</span></div>
+      <div class="article-body">
+<p>On projects where I led Commerce Cloud and Order Management delivery, orders came from two directions: sales reps quoting in Salesforce CPQ, and customers buying on a B2B Commerce storefront. The business wanted one fulfillment process for both. The architecture that made that work is simple to describe and needs discipline to build.</p>
+
+<h3>One product and price truth</h3>
+<p>CPQ and B2B Commerce must sell the same catalogue. Keep products, bundles and pricing rules defined once, and make sure storefront prices and CPQ prices for the same account agree. Most "why is this order different?" issues trace back to two pricing sources drifting apart.</p>
+
+<h3>Two entry points, one order</h3>
+<ul>
+  <li><strong>CPQ path:</strong> an approved quote is ordered, which creates a standard Order with order products.</li>
+  <li><strong>Commerce path:</strong> checkout on the storefront creates an Order for the buyer's account.</li>
+</ul>
+<p>Either way, the result is a standard <strong>Order</strong>. That common shape is what lets Order Management treat both the same.</p>
+
+<h3>Into Order Management</h3>
+<ol>
+  <li>Once the Order is activated, an <strong>Order Summary</strong> is created. It becomes the record of truth for the order's lifecycle.</li>
+  <li><strong>Routing</strong> creates Fulfillment Orders, deciding where each item ships from based on your business rules.</li>
+  <li>Fulfillment, invoicing, cancellations and returns all happen against the Order Summary, so the customer and service teams see one consistent story.</li>
+</ol>
+
+<h3>Design decisions that matter</h3>
+<ul>
+  <li><strong>Decide where approvals live.</strong> Approve discounts in CPQ before ordering, not after the order reaches OMS.</li>
+  <li><strong>Make the hand-off idempotent.</strong> The step that creates Order Summaries should be safe to retry without creating duplicates.</li>
+  <li><strong>Map statuses deliberately</strong> across quote, order, order summary and fulfillment, so reports and customer notifications stay consistent.</li>
+  <li><strong>Test the unhappy paths</strong>, such as partial shipments, cancellations and returns, as thoroughly as the happy path.</li>
+</ul>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Salesforce</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

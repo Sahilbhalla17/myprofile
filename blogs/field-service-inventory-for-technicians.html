@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Managing Technician Van Stock with Field Service Inventory | Sahil Bhalla</title>
+  <meta content="Locations, Product Items, Products Required and Products Consumed: how Field Service inventory fits together, and how technicians use it on assigned jobs." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/field-service-inventory-for-technicians.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 2 min read</span>
+      <h1>Managing Technician Van Stock with Field Service Inventory</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Inventory</span><span class="skill-chip">Field Service</span><span class="skill-chip">Field Service Mobile</span></div>
+      <div class="article-body">
+<p>When technicians carry parts in their vans, the question "do we have it, and where?" decides whether a job is finished on the first visit. Field Service has a complete inventory model built in. The key is setting it up so technicians can use it naturally as they work through assigned jobs.</p>
+
+<h3>The building blocks</h3>
+<ul>
+  <li><strong>Location</strong>: anywhere stock lives. Mark warehouses and vans as inventory locations, and mark vans as mobile. Link each technician's Service Resource to their van location.</li>
+  <li><strong>Product Item</strong>: the quantity of one product at one location, with its unit of measure. Changes are tracked automatically as Product Item Transactions.</li>
+  <li><strong>Product Required</strong>: the parts a job needs, defined on the Work Type so every work order of that type inherits them, or added on the Work Order itself.</li>
+  <li><strong>Product Consumed</strong>: the parts a technician actually used. Saving it reduces the Product Item's quantity on hand.</li>
+  <li><strong>Product Request and Product Transfer</strong>: how technicians ask for more stock and how it moves between locations. Receiving a transfer updates quantities at both ends.</li>
+</ul>
+
+<h3>The technician's flow on a job</h3>
+<ol>
+  <li>A Service Leader assigns the job from the Dispatcher Console.</li>
+  <li>In the mobile app, the technician sees the job's Products Required and checks them against their van stock.</li>
+  <li>If something is missing, they raise a Product Request before driving out.</li>
+  <li>On site, they record Products Consumed against their van's Product Items, and stock updates immediately.</li>
+  <li>Low stock triggers replenishment through Product Requests and Transfers.</li>
+</ol>
+
+<h3>Lessons from real projects</h3>
+<ul>
+  <li><strong>Get units of measure right on day one.</strong> Mixing "box" and "each" for the same product makes on-hand counts meaningless.</li>
+  <li><strong>Use Work Types for required parts.</strong> Defining Products Required once on the Work Type is far more reliable than relying on dispatchers to add parts to every job.</li>
+  <li><strong>Make consumption quick to record.</strong> If logging a part takes more than a few taps, technicians will log it at the end of the day from memory, and stock accuracy drops.</li>
+  <li><strong>Plan stock counts.</strong> Periodic cycle counts, recorded as adjustments, keep van stock honest.</li>
+</ul>
+
+<div class="callout"><strong>Migration note:</strong> Loading historical Products Consumed reduces stock on hand. If you are migrating, read my post on load order before loading inventory.</div>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

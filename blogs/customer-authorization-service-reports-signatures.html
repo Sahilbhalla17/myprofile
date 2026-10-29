@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6E08JLDTS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J6E08JLDTS');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Customer Authorization and Service Reports with Signatures in Field Service | Sahil Bhalla</title>
+  <meta content="Capturing customer sign-off before and after work, using service report templates and digital signatures in the Field Service mobile app." name="description">
+  <link href="../favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="article-topbar">
+    <div class="article-wrap">
+      <a class="article-brand" href="../index.html">Sahil Bhalla</a>
+      <a class="article-back" href="../index.html#blog"><i class="ri-arrow-left-line"></i> All blogs</a>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <article class="article-wrap">
+      <img class="article-banner" src="img/covers/customer-authorization-service-reports-signatures.svg" alt="">
+      <span class="blog-meta">Field Service &middot; 2 min read</span>
+      <h1>Customer Authorization and Service Reports with Signatures in Field Service</h1>
+      <div class="article-author">
+        <img src="../assets/img/profile.jpg" alt="Sahil Bhalla">
+        <div><strong>Sahil Bhalla</strong><span>Salesforce Technical Architect</span></div>
+      </div>
+      <div class="article-tags"><span class="skill-chip">Service Reports</span><span class="skill-chip">Signatures</span><span class="skill-chip">Field Service Mobile</span></div>
+      <div class="article-body">
+<p>Many field jobs need written customer approval: authorization before work starts, and sign-off when it is done. On the oilfield project I led, a Customer Authorization form was part of every job. Field Service has built-in tools for this, and a little design makes them fit both moments.</p>
+
+<h3>Service reports</h3>
+<p>A <strong>service report</strong> is a PDF summary of the job generated from a Work Order, Line Item or Service Appointment. You design it with a <strong>service report template</strong>: choose sections, fields and related lists (such as Products Consumed), and add signature blocks. Technicians generate the report in the mobile app, the customer reviews it on the device, and the PDF is saved to the record and can be emailed.</p>
+
+<h3>Digital signatures</h3>
+<p>Signatures captured on the device are stored as <strong>Digital Signature</strong> records related to the job. Each one records who signed, when, and the <strong>signature type</strong>. Define your own signature types (for example Customer Authorization, Technician and Customer Completion) in Field Service settings, then add a signature block for each type to the template.</p>
+
+<h3>Two moments, two signatures</h3>
+<ol>
+  <li><strong>Before work: authorization.</strong> A short template, or a flow, captures the scope and the customer's approval. Gate the appointment so it cannot move to <em>In Progress</em> until an authorization signature exists.</li>
+  <li><strong>After work: completion.</strong> The full service report shows the work done, parts used and notes, and is signed by the customer and the technician.</li>
+</ol>
+
+<h3>Tips</h3>
+<ul>
+  <li><strong>Keep the authorization template short.</strong> Customers will not read three pages before work starts.</li>
+  <li><strong>Show what was consumed.</strong> Including Products Consumed on the completion report avoids disputes at invoicing.</li>
+  <li><strong>Plan for offline use.</strong> Make sure technicians can capture signatures without a connection and that the records sync when they are back in coverage.</li>
+  <li><strong>Automate delivery.</strong> Email the signed report to the customer automatically, so the technician does not have to.</li>
+</ul>
+      </div>
+
+      <div class="article-related">
+        <h3>More on Field Service</h3>
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="servicemax-to-field-service-object-mapping.html">
+              <div class="blog-cover"><img src="img/covers/servicemax-to-field-service-object-mapping.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>ServiceMax to Salesforce Field Service: Mapping Objects and Processes Before You Migrate</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="field-service-data-migration-load-order.html">
+              <div class="blog-cover"><img src="img/covers/field-service-data-migration-load-order.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 3 min read</span><h4>Field Service Data Migration: The Load Order That Saves You From Rework</h4></div>
+            </a>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <a class="blog-card" href="fsl-mobile-safety-forms-jsa.html">
+              <div class="blog-cover"><img src="img/covers/fsl-mobile-safety-forms-jsa.svg" alt="" loading="lazy"></div>
+              <div class="blog-body"><span class="blog-meta">Field Service &middot; 2 min read</span><h4>Building Job Safety Analysis (JSA) and Job Forms for the Field Service Mobile App</h4></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
