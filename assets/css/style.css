@@ -1915,3 +1915,9 @@ section .container {
     font-size: 16px;
   }
 }
+
+/* Filters: hide filtered-out cards (beats Bootstrap's .d-flex !important) */
+.portfolio-container .portfolio-item.d-none,
+.blog-container .blog-item.d-none {
+  display: none !important;
+}
